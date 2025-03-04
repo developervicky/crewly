@@ -2,8 +2,11 @@ import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
 import React from "react";
 
-const CrewIdPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
+interface PageProps {
+  params: { id: string };
+}
+const CrewIdPage = async ({ params }: PageProps) => {
+  const { id } = params;
   await connectDB();
   const crew = await Crew.findOne({ _id: id }).populate("members");
 
