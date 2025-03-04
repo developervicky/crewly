@@ -8,6 +8,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
   pages: {
     signIn: "/", // Redirects to custom sign-in page
-    // signOut: "/", // Redirects to custom sign-out page
+    signOut: "/", // Redirects to custom sign-out page
   },
 });

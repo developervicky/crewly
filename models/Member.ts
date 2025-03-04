@@ -1,11 +1,17 @@
 import { model, models, Schema } from "mongoose";
 
+export const MemberRoles = {
+  ADMIN: "ADMIN",
+  MODERATOR: "MODERATOR",
+  GUEST: "GUEST",
+};
+
 const MemberSchema = new Schema(
   {
     role: {
       type: String,
-      enum: ["ADMIN", "MODERATOR", "GUEST"],
-      default: "GUEST",
+      enum: Object.values(MemberRoles),
+      default: MemberRoles.GUEST,
       required: true,
     },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },

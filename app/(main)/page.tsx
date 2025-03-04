@@ -17,10 +17,12 @@ const Home = () => {
 
   return (
     <>
-      <div className="h-screen w-full flex items-center justify-center">
+      <div className="relative h-screen w-full flex items-center justify-center">
         <div className="flex flex-col items-center gap-4 border-2 border-stone-500 p-4 rounded-xl">
           <h1 className="text-2xl font-semibold tracking-wide">crewly</h1>
-          <p className="font-extralight">The best way to connect with your crews</p>
+          <p className="font-extralight">
+            The best way to connect with your crews
+          </p>
           <Button
             onClick={() => {
               signIn("google", { redirectTo: "/crew" });
@@ -30,8 +32,10 @@ const Home = () => {
             Google
           </Button>
         </div>
+        <div className="absolute bottom-4 right-4">
+          <ModeToggle />
+        </div>
       </div>
-      <ModeToggle />
     </>
   );
 };
