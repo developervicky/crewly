@@ -1,12 +1,21 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 
-export const MemberRoles = {
-  ADMIN: "ADMIN",
-  MODERATOR: "MODERATOR",
-  GUEST: "GUEST",
-};
+export enum MemberRoles {
+  ADMIN = "ADMIN",
+  MODERATOR = "MODERATOR",
+  GUEST = "GUEST",
+}
 
-const MemberSchema = new Schema(
+export interface IMember {
+  _id?: Types.ObjectId;
+  userId: Types.ObjectId;
+  crewId: Types.ObjectId;
+  role: MemberRoles;
+  createdAt?: Date;
+  updatedAt?: Date; 
+}
+
+const MemberSchema = new Schema<IMember>(
   {
     role: {
       type: String,

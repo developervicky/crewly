@@ -1,6 +1,21 @@
 import { Schema, model, models } from "mongoose";
+import { Types } from "mongoose";
 
-const userSchema = new Schema(
+export interface IUser {
+  _id?: Types.ObjectId; // Optional, MongoDB auto-generates this
+  name?: string;
+  email: string;
+  image?: string;
+  emailVerified?: Date;
+  userId?: string; // Optional if generated elsewhere
+  crews: Types.ObjectId[]; // Array of Crew ObjectIds
+  members: Types.ObjectId[]; // Array of Member ObjectIds
+  channels: Types.ObjectId[]; // Array of Channel ObjectIds
+  createdAt?: Date; // Mongoose timestamps
+  updatedAt?: Date;
+}
+
+const userSchema = new Schema<IUser>(
   {
     name: String,
     email: { type: String, required: true, unique: true },

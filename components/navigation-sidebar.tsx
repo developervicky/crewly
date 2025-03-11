@@ -45,11 +45,7 @@ const NavigationSidebar = async () => {
       </ScrollArea>
       <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
         <ModeToggle />
-        <AvatarMenu
-          name={user.name}
-          email={user.email}
-          imageUrl={user.image}
-        />
+        <AvatarMenu name={user.name} email={user.email} imageUrl={user.image} />
       </div>
     </div>
   );

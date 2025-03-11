@@ -8,7 +8,7 @@ interface CustomAvatarProps {
 
 const CustomAvatar: FC<CustomAvatarProps> = ({ name, imageUrl }) => {
   return (
-    <Avatar>
+    <Avatar className="hover:cursor-pointer">
       <AvatarImage src={imageUrl} />
       <AvatarFallback>{name.charAt(0)}</AvatarFallback>
     </Avatar>

@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import FileUpload from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import CustomToast from "./custom-toast";
+import { useModal } from "@/hooks/use-modal-store";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -38,7 +39,11 @@ const formSchema = z.object({
   }),
 });
 
-const InitialModal = () => {
+const CreateCrewModal = () => {
+  const { isOpen, type, onClose } = useModal();
+
+  const isModalOpen = isOpen && type == "createCrew";
+
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,7 +61,7 @@ const InitialModal = () => {
 
       form.reset();
       router.refresh();
-      window.location.reload();
+      onClose();
       CustomToast({ variant: "success", message: "Crew created" });
     } catch (error) {
       console.error(error);
@@ -66,8 +71,14 @@ const InitialModal = () => {
       });
     }
   };
+
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
@@ -130,4 +141,4 @@ const InitialModal = () => {
   );
 };
 
-export default InitialModal;
+export default CreateCrewModal;

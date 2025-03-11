@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "react-hot-toast";
+import ModalProvider from "@/components/modal-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +37,11 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="crewly-theme"
         >
-          <SessionProvider>{children}</SessionProvider>
+          <Toaster position="top-right" />
+          <SessionProvider>
+            <ModalProvider />
+            {children}
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

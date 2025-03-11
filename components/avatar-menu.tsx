@@ -10,6 +10,7 @@ import CustomAvatar from "./avatar";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
+import CustomToast from "./custom-toast";
 
 interface AvatarMenuProps {
   name: string;
@@ -23,11 +24,16 @@ const AvatarMenu: FC<AvatarMenuProps> = ({ name, email, imageUrl }) => {
     try {
       setSignOutStatus(true);
       await signOut();
+      CustomToast({ variant: "success", message: "Successful Signout" });
     } catch (error) {
       console.log(error);
+      CustomToast({
+        variant: "error",
+        message: "Can't Signout, reload and try again",
+      });
     }
   };
-  console.log(signOutStatus);
+  // console.log(signOutStatus);
   return (
     <Popover>
       <PopoverTrigger>

@@ -1,12 +1,27 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 
-const ChannelSchema = new Schema(
+export enum ChannelTypes {
+  TEXT = "TEXT",
+  AUDIO = "AUDIO",
+  VIDEO = "VIDEO",
+}
+export interface IChannel {
+  _id?: Types.ObjectId;
+  name: string;
+  type: ChannelTypes;
+  userId: Types.ObjectId;
+  crewId: Types.ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date; 
+}
+
+const ChannelSchema = new Schema<IChannel>(
   {
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["TEXT", "AUDIO", "VIDEO"],
-      default: "TEXT",
+      enum: Object.values(ChannelTypes),
+      default: ChannelTypes.TEXT,
       required: true,
     },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
