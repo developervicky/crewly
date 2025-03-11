@@ -3,14 +3,11 @@ import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
 import { IMember } from "@/models/Member";
 import { redirect } from "next/navigation";
-import React, { FC } from "react";
+import React from "react";
 
-interface LayoutProps {
-  children: React.ReactNode;
-  params: { crewId: string };
-}
 
-const layout: FC<LayoutProps> = async ({ children, params }) => {
+
+const layout = async ({ children, params }:{ children: React.ReactNode; params: { crewId: string } }) => {
   const { crewId } = params;
 
   const user = await currentUser();
