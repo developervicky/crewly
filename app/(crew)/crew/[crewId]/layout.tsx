@@ -1,4 +1,3 @@
-/* @next-codemod-ignore */
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
@@ -7,7 +6,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 interface LayoutProps {
-  params: { crewId: string };
+  params: Promise<{ crewId: string }>;
   children: React.ReactNode;
 }
 
