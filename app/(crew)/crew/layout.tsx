@@ -1,5 +1,4 @@
 import NavigationSidebar from "@/components/navigation-sidebar";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import React from "react";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
