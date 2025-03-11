@@ -5,9 +5,12 @@ import { IMember } from "@/models/Member";
 import { redirect } from "next/navigation";
 import React from "react";
 
+interface LayoutProps {
+  params: { crewId: string };
+  children: React.ReactNode;
+}
 
-
-const layout = async ({ children, params }:{ children: React.ReactNode; params: { crewId: string } }) => {
+const layout = async ({ params, children }: LayoutProps) => {
   const { crewId } = params;
 
   const user = await currentUser();
@@ -30,7 +33,6 @@ const layout = async ({ children, params }:{ children: React.ReactNode; params: 
 
       return isMember ? crew : null;
     });
-
 
   console.log(crew);
 
