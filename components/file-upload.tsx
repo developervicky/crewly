@@ -33,7 +33,6 @@ const FileUpload: FC<FileUploadProps> = ({ endPoint, onChange, value }) => {
   return (
     <UploadDropzone
       endpoint={endPoint}
-      className="ut-button:bg-primary"
       onClientUploadComplete={(res) => {
         // console.log(res[0].ufsUrl);
         onChange(res[0].ufsUrl);

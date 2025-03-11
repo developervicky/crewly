@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { connectDB } from "./mongoose";
 import { User } from "@/models/User";
 
-const CurrentUser = async () => {
+const currentUser = async () => {
   const session = await auth();
   if (!session?.user) {
     return null;
@@ -15,4 +15,4 @@ const CurrentUser = async () => {
   return user;
 };
 
-export default CurrentUser;
+export default currentUser;
