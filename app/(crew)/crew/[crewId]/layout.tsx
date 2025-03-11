@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 const layout: FC<LayoutProps> = async ({ children, params }) => {
-  const { crewId } = await params;
+  const { crewId } = params;
 
   const user = await currentUser();
 
