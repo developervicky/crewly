@@ -1,3 +1,4 @@
+/* @next-codemod-ignore */
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
@@ -11,8 +12,7 @@ interface LayoutProps {
 }
 
 const layout = async ({ params, children }: LayoutProps) => {
-  const { crewId } = params;
-
+  const { crewId } = await params;
   const user = await currentUser();
 
   if (!user) {
