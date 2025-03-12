@@ -27,21 +27,21 @@ export async function POST(req: Request) {
     const channel = await Channel.create({
       name: "general",
       userId: user._id, // Link channel to user
-      crewId: newCrew._id, // Link channel to server
+      crewId: newCrew._id, // Link channel to crew
     });
 
-    // Create a member for the server
+    // Create a member for the crew
     const member = await Member.create({
       userId: user._id,
       crewId: newCrew._id,
       role: MemberRoles.ADMIN,
     });
 
-    // Push the created references into the Server document
+    // Push the created references into the crew document
     newCrew.channels.push(channel._id);
     newCrew.members.push(member._id);
 
-    // Save the updated server document
+    // Save the updated crew document
     await newCrew.save();
 
     return NextResponse.json(newCrew);

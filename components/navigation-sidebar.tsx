@@ -17,7 +17,7 @@ const NavigationSidebar = async () => {
     redirect("/");
   }
 
-  console.log(user);
+  // console.log(user);
 
   await connectDB();
 

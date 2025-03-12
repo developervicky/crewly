@@ -1,3 +1,4 @@
+import CrewSidebar from "@/components/crew-sidebar";
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
@@ -18,6 +19,14 @@ const layout = async ({ params, children }: LayoutProps) => {
     redirect("/");
   }
 
+  const NonMember = () => {
+    return (
+      <div className=" flex items-center justify-center h-screen text-2xl font-semibold">
+        You are not a part of this crew! 👀
+      </div>
+    );
+  };
+
   await connectDB();
 
   const crew = await Crew.findOne({ _id: crewId })
@@ -33,9 +42,20 @@ const layout = async ({ params, children }: LayoutProps) => {
       return isMember ? crew : null;
     });
 
-  console.log(crew);
+  if (!crew) {
+    return <NonMember />;
+  }
 
-  return <div>{children}</div>;
+  // console.log(crew);
+
+  return (
+    <div className="h-full">
+      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
+        <CrewSidebar crewId={crewId} />
+      </div>
+      <main className="h-full md:pl-60">{children}</main>
+    </div>
+  );
 };
 
 export default layout;
