@@ -28,10 +28,10 @@ const NavigationSidebar = async () => {
 
   const crews = memberCrews.map((crew) => crew.crewId);
 
-  console.log(crews);
+  // console.log(crews);
 
   return (
-    <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3">
+    <div className="space-y-4 flex flex-col bg-[#F2F3F5] items-center rounded-xl h-[95%] text-primary w-full dark:bg-[#1E1F22] py-3">
       <NavigationAction />
       <Separator className="!h-[2px] bg-gray-300 dark:bg-gray-700 rounded-md !w-10 mx-auto" />
       <ScrollArea className="flex-1 w-full">
