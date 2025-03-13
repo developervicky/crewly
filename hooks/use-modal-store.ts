@@ -1,7 +1,7 @@
 import { ICrew } from "@/models/Crew";
 import { create } from "zustand";
 
-export type ModalType = "createCrew" | "invite";
+export type ModalType = "createCrew" | "invite" | "editCrew";
 
 interface ModalData {
   crew?: ICrew;

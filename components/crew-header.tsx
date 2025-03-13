@@ -48,7 +48,10 @@ const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("editCrew", { crew })}
+            className="px-3 py-2 group hover:text-white transition-all !cursor-pointer"
+          >
             Crew Settings
             <Settings className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>
