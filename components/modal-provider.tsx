@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CreateCrewModal from "./create-crew-modal";
+import InviteModal from "./invite-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -14,6 +15,7 @@ const ModalProvider = () => {
   return (
     <>
       <CreateCrewModal />
+      <InviteModal />
     </>
   );
 };

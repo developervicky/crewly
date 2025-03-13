@@ -1,16 +1,15 @@
-import { CallbackError, model, models, Schema } from "mongoose";
-import { Member } from "./Member";
+import { CallbackError, model, models, Schema, Types } from "mongoose";
 import { Channel } from "./Channel";
-import { Types } from "mongoose";
+import { Member } from "./Member";
 
 export interface ICrew {
-  _id?: Types.ObjectId; // Optional because MongoDB auto-generates it
+  _id?: Types.ObjectId | string; // Optional because MongoDB auto-generates it
   name: string;
   imageUrl: string;
-  inviteCode: string;
-  userId: Types.ObjectId; // Reference to the User model
-  members: Types.ObjectId[]; // Array of Member ObjectIds
-  channels: Types.ObjectId[]; // Array of Channel ObjectIds
+  inviteCode: { type: string; required: true; unique: true };
+  userId: Types.ObjectId | string; // Reference to the User model
+  members: Types.ObjectId[] | string[]; // Array of Member ObjectIds
+  channels: Types.ObjectId[] | string[]; // Array of Channel ObjectIds
   createdAt?: Date; // Optional, managed by Mongoose
   updatedAt?: Date; // Optional, managed by Mongoose
 }

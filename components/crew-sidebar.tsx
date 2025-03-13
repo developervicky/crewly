@@ -6,6 +6,7 @@ import { IMember } from "@/models/Member";
 import { redirect } from "next/navigation";
 import React from "react";
 import CrewHeader from "./crew-header";
+import { ToPlainObject } from "@/lib/to-plain-object";
 
 interface CrewSidebarProps {
   crewId: string;
@@ -30,7 +31,12 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
         path: "userId",
       },
       options: { sort: { role: 1 } },
-    });
+    })
+    .lean();
+
+  const serializedCrew = ToPlainObject(crew);
+
+  // console.log(serializedCrew);
 
   if (!crew) {
     redirect("/");
@@ -53,11 +59,9 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
     (member: IMember) => member.userId._id.toString() === user._id.toString()
   )?.role;
 
-  console.log(crew);
-
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
-      <CrewHeader crew={crew} role={role} />
+      <CrewHeader crew={serializedCrew} role={role} />
     </div>
   );
 };

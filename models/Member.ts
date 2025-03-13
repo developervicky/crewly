@@ -7,12 +7,12 @@ export enum MemberRoles {
 }
 
 export interface IMember {
-  _id?: Types.ObjectId;
-  userId: Types.ObjectId;
-  crewId: Types.ObjectId;
+  _id?: Types.ObjectId | string;
+  userId: Types.ObjectId | string;
+  crewId: Types.ObjectId | string;
   role: MemberRoles;
   createdAt?: Date;
-  updatedAt?: Date; 
+  updatedAt?: Date;
 }
 
 const MemberSchema = new Schema<IMember>(

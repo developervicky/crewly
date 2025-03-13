@@ -1,13 +1,6 @@
-import { MemberRoles } from "@/models/Member";
+"use client";
+import { useModal } from "@/hooks/use-modal-store";
 import { CrewPopulated } from "@/types";
-import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import {
   ChevronDown,
   LogOut,
@@ -17,15 +10,22 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 interface CrewHeaderProps {
-  crew: CrewPopulated | null;
-  role?: MemberRoles | null;
+  crew: CrewPopulated;
+  role?: "ADMIN" | "GUEST" | "MODERATOR";
 }
 
 const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
-  const isAdmin = role === MemberRoles.ADMIN;
-  const isModerator = isAdmin || role === MemberRoles.MODERATOR;
+  const { onOpen } = useModal();
+  const isAdmin = role === "ADMIN";
+  const isModerator = isAdmin || role === "MODERATOR";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -39,27 +39,30 @@ const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-gray-400 space-y-[2px] ">
         {isModerator && (
-          <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("invite", { crew })}
+            className="px-3 py-2 group hover:text-white transition-all !cursor-pointer"
+          >
             Invite People
-            <UserPlus className="h-4 w-4 ml-auto group-hover:text-white" />
+            <UserPlus className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
             Crew Settings
-            <Settings className="h-4 w-4 ml-auto group-hover:text-white" />
+            <Settings className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
             Manage Members
-            <Users className="h-4 w-4 ml-auto group-hover:text-white" />
+            <Users className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>
         )}
         {isModerator && (
           <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
             Create Channel
-            <PlusCircle className="h-4 w-4 ml-auto group-hover:text-white" />
+            <PlusCircle className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>
         )}
         {isModerator && <DropdownMenuSeparator />}

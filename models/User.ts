@@ -2,15 +2,15 @@ import { Schema, model, models } from "mongoose";
 import { Types } from "mongoose";
 
 export interface IUser {
-  _id?: Types.ObjectId; // Optional, MongoDB auto-generates this
+  _id?: Types.ObjectId | string; // Optional, MongoDB auto-generates this
   name?: string;
   email: string;
   image?: string;
   emailVerified?: Date;
   userId?: string; // Optional if generated elsewhere
-  crews: Types.ObjectId[]; // Array of Crew ObjectIds
-  members: Types.ObjectId[]; // Array of Member ObjectIds
-  channels: Types.ObjectId[]; // Array of Channel ObjectIds
+  crews: Types.ObjectId[] | string[]; // Array of Crew ObjectIds
+  members: Types.ObjectId[] | string[]; // Array of Member ObjectIds
+  channels: Types.ObjectId[] | string[]; // Array of Channel ObjectIds
   createdAt?: Date; // Mongoose timestamps
   updatedAt?: Date;
 }

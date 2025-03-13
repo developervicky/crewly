@@ -6,13 +6,13 @@ export enum ChannelTypes {
   VIDEO = "VIDEO",
 }
 export interface IChannel {
-  _id?: Types.ObjectId;
+  _id?: Types.ObjectId | string;
   name: string;
   type: ChannelTypes;
-  userId: Types.ObjectId;
-  crewId: Types.ObjectId;
+  userId: Types.ObjectId | string;
+  crewId: Types.ObjectId | string;
   createdAt?: Date;
-  updatedAt?: Date; 
+  updatedAt?: Date;
 }
 
 const ChannelSchema = new Schema<IChannel>(

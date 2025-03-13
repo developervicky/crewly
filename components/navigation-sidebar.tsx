@@ -1,15 +1,14 @@
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
-import { Crew } from "@/models/Crew";
 import { redirect } from "next/navigation";
 
-import React from "react";
+import { Member } from "@/models/Member";
+import AvatarMenu from "./avatar-menu";
 import NavigationAction from "./navigation-action";
-import { Separator } from "./ui/separator";
-import { ScrollArea } from "./ui/scroll-area";
 import NavigationItem from "./navigation-item";
 import { ModeToggle } from "./ui/mode-toggle";
-import AvatarMenu from "./avatar-menu";
+import { ScrollArea } from "./ui/scroll-area";
+import { Separator } from "./ui/separator";
 
 const NavigationSidebar = async () => {
   const user = await currentUser();
@@ -21,9 +20,15 @@ const NavigationSidebar = async () => {
 
   await connectDB();
 
-  const crews = await Crew.find({ userId: user._id });
+  const memberCrews = await Member.find({ userId: user._id })
+    .populate({
+      path: "crewId",
+    })
+    .lean();
 
-  // console.log(crews);
+  const crews = memberCrews.map((crew) => crew.crewId);
+
+  console.log(crews);
 
   return (
     <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3">

@@ -1,10 +1,10 @@
 import CurrentUser from "@/lib/current-user";
-import { v4 as uuidv4 } from "uuid";
 import { connectDB } from "@/lib/mongoose";
-import { Crew } from "@/models/Crew";
-import { NextResponse } from "next/server";
 import { Channel } from "@/models/Channel";
+import { Crew } from "@/models/Crew";
 import { Member, MemberRoles } from "@/models/Member";
+import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: Request) {
   try {
@@ -41,8 +41,14 @@ export async function POST(req: Request) {
     newCrew.channels.push(channel._id);
     newCrew.members.push(member._id);
 
+    // Push the created reference into the user document
+    user.crews.push(newCrew._id);
+    user.members.push(member._id);
+    user.channels.push(channel._id);
+
     // Save the updated crew document
     await newCrew.save();
+    await user.save();
 
     return NextResponse.json(newCrew);
   } catch (error) {
