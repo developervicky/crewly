@@ -3,10 +3,10 @@ import { connectDB } from "@/lib/mongoose";
 import { Channel } from "@/models/Channel";
 import { Crew } from "@/models/Crew";
 import { Member, MemberRoles } from "@/models/Member";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { name, imageUrl } = await req.json();
     const user = await CurrentUser();

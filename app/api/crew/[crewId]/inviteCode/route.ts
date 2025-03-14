@@ -1,10 +1,13 @@
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-export async function PATCH({ params }: { params: { crewId: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { crewId: string } }
+) {
   try {
     const user = await currentUser();
     if (!user) {

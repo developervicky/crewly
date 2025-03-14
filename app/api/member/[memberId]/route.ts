@@ -3,10 +3,10 @@ import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
 import { Member } from "@/models/Member";
 import { User } from "@/models/User";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { memberId: string } }
 ) {
   try {
