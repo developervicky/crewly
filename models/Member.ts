@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { InferSchemaType, model, models, Schema, Types } from "mongoose";
 
 export enum MemberRoles {
   ADMIN = "ADMIN",
@@ -6,16 +6,7 @@ export enum MemberRoles {
   GUEST = "GUEST",
 }
 
-export interface IMember {
-  _id?: Types.ObjectId | string;
-  userId: Types.ObjectId | string;
-  crewId: Types.ObjectId | string;
-  role: MemberRoles;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-const MemberSchema = new Schema<IMember>(
+const MemberSchema = new Schema(
   {
     role: {
       type: String,
@@ -28,5 +19,9 @@ const MemberSchema = new Schema<IMember>(
   },
   { timestamps: true }
 );
+
+export type IMember = InferSchemaType<typeof MemberSchema> & {
+  _id: Types.ObjectId | string;
+};
 
 export const Member = models.Member || model("Member", MemberSchema);

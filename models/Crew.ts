@@ -1,20 +1,15 @@
-import { CallbackError, model, models, Schema, Types } from "mongoose";
+import {
+  CallbackError,
+  InferSchemaType,
+  model,
+  models,
+  Schema,
+} from "mongoose";
 import { Channel } from "./Channel";
 import { Member } from "./Member";
+import { Types } from "mongoose";
 
-export interface ICrew {
-  _id?: Types.ObjectId | string; // Optional because MongoDB auto-generates it
-  name: string;
-  imageUrl: string;
-  inviteCode: { type: string; required: true; unique: true };
-  userId: Types.ObjectId | string; // Reference to the User model
-  members: Types.ObjectId[] | string[]; // Array of Member ObjectIds
-  channels: Types.ObjectId[] | string[]; // Array of Channel ObjectIds
-  createdAt?: Date; // Optional, managed by Mongoose
-  updatedAt?: Date; // Optional, managed by Mongoose
-}
-
-const crewSchema = new Schema<ICrew>(
+const crewSchema = new Schema(
   {
     name: String,
     imageUrl: String,
@@ -54,5 +49,7 @@ crewSchema.pre("findOneAndDelete", async function (next) {
     next(error as CallbackError);
   }
 });
+
+export type ICrew = InferSchemaType<typeof crewSchema> & { _id: Types.ObjectId | string };
 
 export const Crew = models.Crew || model("Crew", crewSchema);

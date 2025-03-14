@@ -1,8 +1,7 @@
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
-import { ChannelTypes, IChannel } from "@/models/Channel";
 import { Crew } from "@/models/Crew";
-import { IMember } from "@/models/Member";
+import { CrewPopulated } from "@/types";
 import { redirect } from "next/navigation";
 import CrewHeader from "./crew-header";
 
@@ -16,7 +15,7 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
   if (!user) {
     redirect("/");
   }
-  
+
   await connectDB();
   const crew = await Crew.findById(crewId)
     .populate({
@@ -30,32 +29,29 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
       },
       options: { sort: { role: 1 } },
     })
-    .lean();
+    .lean<CrewPopulated>();
 
   if (!crew) {
     redirect("/");
   }
-  const serializedCrew = JSON.parse(JSON.stringify(crew));
 
-  const TextChannels = serializedCrew.channels.filter(
-    (channel: IChannel) => channel.type === ChannelTypes.TEXT
-  );
-  const AudioChannels = serializedCrew.channels.filter(
-    (channel: IChannel) => channel.type === ChannelTypes.AUDIO
-  );
-  const VideoChannels = serializedCrew.channels.filter(
-    (channel: IChannel) => channel.type === ChannelTypes.VIDEO
-  );
-  const Members = serializedCrew.members.filter(
-    (member: IMember) =>
-      typeof member.userId === "object" &&
-      member.userId._id !== user._id.toString()
-  );
+  const serializedCrew: CrewPopulated = JSON.parse(JSON.stringify(crew));
+
+  // const TextChannels = serializedCrew.channels.filter(
+  //   (channel) => channel.type === ChannelTypes.TEXT
+  // );
+  // const AudioChannels = serializedCrew.channels.filter(
+  //   (channel) => channel.type === ChannelTypes.AUDIO
+  // );
+  // const VideoChannels = serializedCrew.channels.filter(
+  //   (channel) => channel.type === ChannelTypes.VIDEO
+  // );
+  // const Members = serializedCrew.members.filter(
+  //   (member) => member.userId._id !== user._id.toString()
+  // );
 
   const role = serializedCrew.members.find(
-    (member: IMember) =>
-      typeof member.userId === "object" &&
-      member.userId._id === user._id.toString()
+    (member) => member.userId._id === user._id.toString()
   )?.role;
 
   console.log(role);

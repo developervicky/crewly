@@ -1,10 +1,10 @@
-import { ICrew } from "@/models/Crew";
+import { CrewPopulated } from "@/types";
 import { create } from "zustand";
 
-export type ModalType = "createCrew" | "invite" | "editCrew";
+export type ModalType = "createCrew" | "invite" | "editCrew" | "members";
 
 interface ModalData {
-  crew?: ICrew;
+  crew?: CrewPopulated;
 }
 
 interface ModalStore {

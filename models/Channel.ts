@@ -1,21 +1,12 @@
-import { model, models, Schema, Types } from "mongoose";
+import { InferSchemaType, model, models, Schema, Types } from "mongoose";
 
 export enum ChannelTypes {
   TEXT = "TEXT",
   AUDIO = "AUDIO",
   VIDEO = "VIDEO",
 }
-export interface IChannel {
-  _id?: Types.ObjectId | string;
-  name: string;
-  type: ChannelTypes;
-  userId: Types.ObjectId | string;
-  crewId: Types.ObjectId | string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
 
-const ChannelSchema = new Schema<IChannel>(
+const ChannelSchema = new Schema(
   {
     name: { type: String, required: true },
     type: {
@@ -29,4 +20,9 @@ const ChannelSchema = new Schema<IChannel>(
   },
   { timestamps: true }
 );
+
+export type IChannel = InferSchemaType<typeof ChannelSchema> & {
+  _id: Types.ObjectId | string;
+};
+
 export const Channel = models.Channel || model("Channel", ChannelSchema);
