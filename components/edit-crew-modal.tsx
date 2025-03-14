@@ -56,8 +56,8 @@ const EditCrewModal = () => {
 
   useEffect(() => {
     if (crew) {
-      form.setValue("name", crew.name);
-      form.setValue("imageUrl", crew.imageUrl);
+      form.setValue("name", crew.name ?? "");
+      form.setValue("imageUrl", crew.imageUrl ?? "");
     }
   }, [crew, form, isOpen]);
 
