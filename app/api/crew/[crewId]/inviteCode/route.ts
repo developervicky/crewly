@@ -6,21 +6,23 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-export async function PATCH(req: NextRequest, { params }: { params: { crewId: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ crewId: string }> }) {
   try {
     const user = await currentUser();
+
+    const crewId = await params
 
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    if (!params.crewId) {
+    if (!crewId) {
       return new NextResponse("CrewId Missing", { status: 400 });
     }
 
     await connectDB();
     const crew = await Crew.findOneAndUpdate(
       {
-        _id: params.crewId,
+        _id: crewId,
         userId: user._id,
       },
       {

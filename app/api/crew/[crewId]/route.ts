@@ -4,15 +4,16 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { crewId: string } } 
+  { params }: { params: Promise<{ crewId: string }> } 
 ) {
   try {
     const user = await currentUser();
+    const {crewId} = await params; 
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!params.crewId) {
+    if (!crewId) {
       return new NextResponse("CrewId Missing", { status: 400 });
     }
 
@@ -20,7 +21,7 @@ export async function PATCH(
 
     const crew = await Crew.findOneAndUpdate(
       {
-        _id: params.crewId,
+        _id: crewId,
         userId: user._id,
       },
       { $set: { name, imageUrl } },

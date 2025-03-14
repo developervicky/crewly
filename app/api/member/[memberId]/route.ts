@@ -7,10 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const user = await currentUser();
+    const {memberId} = await params;
     const { searchParams } = new URL(req.url);
     const crewId = searchParams.get("crewId");
     const memberUserId = searchParams.get("memberUserId");
@@ -24,13 +25,13 @@ export async function DELETE(
     if (!memberUserId) {
       return new NextResponse("memberUserId Missing", { status: 400 });
     }
-    if (!params.memberId) {
+    if (!memberId) {
       return new NextResponse("MemberId Missing", { status: 400 });
     }
 
     await connectDB();
 
-    const memberKickout = await Member.findByIdAndDelete(params.memberId);
+    const memberKickout = await Member.findByIdAndDelete(memberId);
 
     if (!memberKickout) {
       return new NextResponse("can't find member", { status: 400 });
@@ -40,7 +41,7 @@ export async function DELETE(
       memberUserId,
       {
         $pull: {
-          members: params.memberId,
+          members: memberId,
           crews: crewId,
         },
       },
@@ -53,7 +54,7 @@ export async function DELETE(
 
     const crew = await Crew.findOneAndUpdate(
       { _id: crewId, userId: user._id },
-      { $pull: { members: params.memberId } },
+      { $pull: { members: memberId } },
       { new: true }
     )
       .populate({
@@ -80,10 +81,11 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const user = await currentUser();
+    const{memberId} = await params;
     const { searchParams } = new URL(req.url);
     const { role } = await req.json();
 
@@ -97,13 +99,13 @@ export async function PATCH(
       return new NextResponse("CrewId Missing", { status: 400 });
     }
 
-    if (!params.memberId) {
+    if (!memberId) {
       return new NextResponse("MemberId Missing", { status: 400 });
     }
     await connectDB();
 
     const memberUpdate = await Member.findOneAndUpdate(
-      { _id: params.memberId, crewId },
+      { _id: memberId, crewId },
       { $set: { role } },
       { new: true }
     );
