@@ -6,10 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { crewId: string } }
+  context: { params: { crewId: string } }
 ) {
   try {
     const user = await currentUser();
+
+    const { params } = context;
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
