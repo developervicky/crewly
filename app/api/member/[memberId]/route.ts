@@ -5,7 +5,10 @@ import { Member } from "@/models/Member";
 import { User } from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest, params: { memberId: string }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { memberId: string } }
+) {
   try {
     const user = await currentUser();
     const { searchParams } = new URL(req.url);

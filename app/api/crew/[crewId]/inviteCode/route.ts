@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-export async function PATCH(req: NextRequest, params: { crewId: string }) {
+export async function PATCH(req: NextRequest, { params }: { params: { crewId: string } }) {
   try {
     const user = await currentUser();
 

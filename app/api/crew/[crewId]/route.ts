@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  params : { crewId: string } 
+  { params }: { params: { crewId: string } } 
 ) {
   try {
     const user = await currentUser();
