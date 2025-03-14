@@ -6,7 +6,7 @@ import { User } from "@/models/User";
 import { redirect } from "next/navigation";
 
 interface InvitePageProps {
-  params: { inviteCode: string };
+  params: Promise<{ inviteCode: string }>;
 }
 
 const InvitePage = async ({ params }: InvitePageProps) => {
@@ -31,7 +31,6 @@ const InvitePage = async ({ params }: InvitePageProps) => {
     console.log("You are an existing member of this crew");
     return redirect(`/crew/${existingMember._id}`);
   }
-
 
   const newMember = await Member.create({
     userId: user._id,
