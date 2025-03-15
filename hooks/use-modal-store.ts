@@ -6,7 +6,9 @@ export type ModalType =
   | "invite"
   | "editCrew"
   | "members"
-  | "createChannel";
+  | "createChannel"
+  | "leaveCrew"
+  | "deleteCrew";
 
 interface ModalData {
   crew?: CrewPopulated;

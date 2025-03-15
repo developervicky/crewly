@@ -76,13 +76,19 @@ const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
         )}
         {isModerator && <DropdownMenuSeparator />}
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 group text-rose-500 hover:!text-rose-700 transition-all !cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("deleteCrew")}
+            className="px-3 py-2 group text-rose-500 hover:!text-rose-700 transition-all !cursor-pointer"
+          >
             Delete Crew
             <Trash className="h-4 w-4 ml-auto group-hover:text-rose-700" />
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 group text-rose-500 hover:!text-rose-700 transition-all !cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("leaveCrew")}
+            className="px-3 py-2 group text-rose-500 hover:!text-rose-700 transition-all !cursor-pointer"
+          >
             Leave Crew
             <LogOut className="h-4 w-4 ml-auto group-hover:text-rose-700" />
           </DropdownMenuItem>

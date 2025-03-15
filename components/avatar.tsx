@@ -7,6 +7,7 @@ interface CustomAvatarProps {
 }
 
 const CustomAvatar: FC<CustomAvatarProps> = ({ name, imageUrl }) => {
+  console.log(imageUrl);
   return (
     <Avatar className="hover:cursor-pointer">
       <AvatarImage src={imageUrl} />
