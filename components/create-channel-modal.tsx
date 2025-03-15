@@ -1,7 +1,7 @@
 "use client";
-import axios from "axios";
-
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -14,7 +14,6 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
-import FileUpload from "@/components/file-upload";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,29 +25,42 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
-import { useRouter } from "next/navigation";
+import { ChannelTypes } from "@/types";
+import { useParams, useRouter } from "next/navigation";
 import CustomToast from "./custom-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Crew name is required 👀",
-  }),
-  imageUrl: z.string().min(1, {
-    message: "Upload your crew image 👀",
-  }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Channel name is required 👀",
+    })
+    .refine((name) => name.toLowerCase() !== "general", {
+      message: "Channel name can't be 'general'",
+    }),
+  type: z.nativeEnum(ChannelTypes),
 });
 
-const CreateCrewModal = () => {
+const CreateChannelModal = () => {
   const { isOpen, type, onClose } = useModal();
 
-  const isModalOpen = isOpen && type == "createCrew";
+  const isModalOpen = isOpen && type == "createChannel";
 
   const router = useRouter();
+  const params = useParams();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      type: ChannelTypes.TEXT,
     },
   });
 
@@ -56,12 +68,19 @@ const CreateCrewModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/crew", values);
+      const url = qs.stringifyUrl({
+        url: "/api/channels",
+        query: {
+          crewId: params?.crewId,
+        },
+      });
+
+      await axios.post(url, values);
 
       form.reset();
       router.refresh();
       onClose();
-      CustomToast({ variant: "success", message: "Crew created" });
+      CustomToast({ variant: "success", message: "Channel created" });
     } catch (error) {
       console.error(error);
       CustomToast({
@@ -81,51 +100,66 @@ const CreateCrewModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Launch your crew 🚀
+            Launch your channel 🚀
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Assemble your crew—give it a name, set an image, and make it yours!
-            🫂
+            Build your channel—choose a name, set an type, and make it uniquely
+            yours! 🎙️
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-center text-center">
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <FileUpload
-                          endPoint="crewImage"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Crew name
+                      Channel name
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="your crew name"
+                        placeholder="your channel name"
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Channel type
+                    </FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="!bg-zinc-300/50 border-0 focus:ring-0 w-full ring-offset-0 focus:ring-offset-0 capitalize ">
+                          <SelectValue placeholder="select you channel type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(ChannelTypes).map((type) => (
+                          <SelectItem
+                            key={type}
+                            value={type}
+                            className="capitalize"
+                          >
+                            {type.toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -140,4 +174,4 @@ const CreateCrewModal = () => {
   );
 };
 
-export default CreateCrewModal;
+export default CreateChannelModal;

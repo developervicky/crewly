@@ -2,7 +2,8 @@ import CurrentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Channel } from "@/models/Channel";
 import { Crew } from "@/models/Crew";
-import { Member, MemberRoles } from "@/models/Member";
+import { Member} from "@/models/Member";
+import { MemberRoles } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 

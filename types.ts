@@ -7,3 +7,17 @@ export type CrewPopulated = Omit<ICrew, "members" | "channels"> & {
   members: (IMember & { userId: IUser })[];
   channels: IChannel[];
 };
+
+export enum ChannelTypes {
+  TEXT = "TEXT",
+  AUDIO = "AUDIO",
+  VIDEO = "VIDEO",
+}
+
+
+export enum MemberRoles {
+  ADMIN = "ADMIN",
+  MODERATOR = "MODERATOR",
+  GUEST = "GUEST",
+}
+

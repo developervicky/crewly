@@ -66,7 +66,10 @@ const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
           </DropdownMenuItem>
         )}
         {isModerator && (
-          <DropdownMenuItem className="px-3 py-2 group hover:text-white transition-all !cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("createChannel")}
+            className="px-3 py-2 group hover:text-white transition-all !cursor-pointer"
+          >
             Create Channel
             <PlusCircle className="h-4 w-4 ml-auto dark:group-hover:text-white" />
           </DropdownMenuItem>

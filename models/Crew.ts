@@ -36,20 +36,6 @@ crewSchema.pre(
   }
 );
 
-// ✅ Handles `findOneAndDelete()` and `deleteMany()` (query method)
-crewSchema.pre("findOneAndDelete", async function (next) {
-  try {
-    const crew = await this.model.findOne(this.getFilter()); // Get the crew being deleted
-    if (crew) {
-      await Member.deleteMany({ crewId: crew._id });
-      await Channel.deleteMany({ crewId: crew._id });
-    }
-    next();
-  } catch (error) {
-    next(error as CallbackError);
-  }
-});
-
 export type ICrew = InferSchemaType<typeof crewSchema> & { _id: Types.ObjectId | string };
 
 export const Crew = models.Crew || model("Crew", crewSchema);

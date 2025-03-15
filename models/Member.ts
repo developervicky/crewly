@@ -1,10 +1,5 @@
+import { MemberRoles } from "@/types";
 import { InferSchemaType, model, models, Schema, Types } from "mongoose";
-
-export enum MemberRoles {
-  ADMIN = "ADMIN",
-  MODERATOR = "MODERATOR",
-  GUEST = "GUEST",
-}
 
 const MemberSchema = new Schema(
   {

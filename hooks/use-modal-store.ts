@@ -1,7 +1,12 @@
 import { CrewPopulated } from "@/types";
 import { create } from "zustand";
 
-export type ModalType = "createCrew" | "invite" | "editCrew" | "members";
+export type ModalType =
+  | "createCrew"
+  | "invite"
+  | "editCrew"
+  | "members"
+  | "createChannel";
 
 interface ModalData {
   crew?: CrewPopulated;

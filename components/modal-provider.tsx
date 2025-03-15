@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import CreateChannelModal from "./create-channel-modal";
 import CreateCrewModal from "./create-crew-modal";
 import EditCrewModal from "./edit-crew-modal";
 import InviteModal from "./invite-modal";
@@ -20,6 +21,7 @@ const ModalProvider = () => {
       <InviteModal />
       <EditCrewModal />
       <MembersModal />
+      <CreateChannelModal />
     </>
   );
 };

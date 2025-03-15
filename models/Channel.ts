@@ -1,10 +1,6 @@
+import { ChannelTypes } from "@/types";
 import { InferSchemaType, model, models, Schema, Types } from "mongoose";
 
-export enum ChannelTypes {
-  TEXT = "TEXT",
-  AUDIO = "AUDIO",
-  VIDEO = "VIDEO",
-}
 
 const ChannelSchema = new Schema(
   {
