@@ -11,7 +11,7 @@ export async function DELETE(
 ) {
   try {
     const user = await currentUser();
-    const {memberId} = await params;
+    const { memberId } = await params;
     const { searchParams } = new URL(req.url);
     const crewId = searchParams.get("crewId");
     const memberUserId = searchParams.get("memberUserId");
@@ -68,6 +68,7 @@ export async function DELETE(
         path: "channels",
         options: { sort: { createdAt: 1 } },
       });
+
     if (!crew) {
       return new NextResponse("Can't find the updated crew", { status: 400 });
     }
@@ -85,7 +86,7 @@ export async function PATCH(
 ) {
   try {
     const user = await currentUser();
-    const{memberId} = await params;
+    const { memberId } = await params;
     const { searchParams } = new URL(req.url);
     const { role } = await req.json();
 

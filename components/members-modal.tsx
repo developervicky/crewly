@@ -5,7 +5,6 @@ import axios from "axios";
 import {
   BadgeCheck,
   Check,
-  Crown,
   Loader2,
   MoreVertical,
   ShieldQuestion,
@@ -17,6 +16,7 @@ import qs from "query-string";
 import { useState } from "react";
 import CustomAvatar from "./avatar";
 import CustomToast from "./custom-toast";
+import { CustomIcon } from "./icon-map";
 import {
   Dialog,
   DialogContent,
@@ -45,12 +45,6 @@ const MembersModal = () => {
   const router = useRouter();
 
   const isModalOpen = isOpen && type == "members";
-
-  const roleIconMap = {
-    GUEST: null,
-    MODERATOR: <BadgeCheck className="h-4 w-4 ml-1 text-emerald-600" />,
-    ADMIN: <Crown className="h-4 w-4 ml-1 text-amber-500" />,
-  };
 
   const onKick = async (memberId: string, memberUserId: string) => {
     try {
@@ -145,7 +139,7 @@ const MembersModal = () => {
                 <div className="flex flex-col gap-y-1">
                   <div className="text-xs font-semibold flex items-center">
                     {member?.userId?.name}
-                    {roleIconMap[member?.role]}
+                    {CustomIcon(member?.role, "ml-1")}
                   </div>
                   <div className="text-xs text-gray-500">
                     {member?.userId?.email}

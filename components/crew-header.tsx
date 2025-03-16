@@ -32,7 +32,7 @@ const CrewHeader = ({ crew, role }: CrewHeaderProps) => {
         className="focus:outline-none !cursor-pointer"
         asChild
       >
-        <button className="w-full text-md font-semibold px-3 flex items-center h-12 border-gray-200 dark:border-gray-800 border-b-2 hover:bg-stone-700/10 dark:bg-stone-700/50 transition">
+        <button className="w-full text-md font-semibold px-3 flex items-center h-12 border-gray-200 dark:border-gray-700 border-b-2 hover:bg-stone-700/10 dark:bg-stone-700/50 transition">
           {crew?.name}
           <ChevronDown className="h-5 w-5 ml-auto" />
         </button>

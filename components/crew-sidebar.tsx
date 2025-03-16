@@ -1,30 +1,20 @@
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Crew } from "@/models/Crew";
-import { ChannelTypes, CrewPopulated, MemberRoles } from "@/types";
-import { BadgeCheck, Crown, Hash, Mic, Video } from "lucide-react";
+import { ChannelTypes, CrewPopulated } from "@/types";
 import { redirect } from "next/navigation";
+import CrewChannel from "./crew-channel";
 import CrewHeader from "./crew-header";
+import CrewMember from "./crew-member";
 import CrewSearch from "./crew-search";
+import CrewSection from "./crew-section";
+import { CustomIcon } from "./icon-map";
 import { ScrollArea } from "./ui/scroll-area";
+import { Separator } from "./ui/separator";
 
 interface CrewSidebarProps {
   crewId: string;
 }
-
-const ChannelIcons = {
-  [ChannelTypes.TEXT]: <Hash className="h-4 w-4 mr-2" />,
-  [ChannelTypes.AUDIO]: <Mic className="h-4 w-4 mr-2" />,
-  [ChannelTypes.VIDEO]: <Video className="h-4 w-4 mr-2" />,
-};
-
-const MemberRoleIcons = {
-  [MemberRoles.GUEST]: null,
-  [MemberRoles.ADMIN]: <Crown className="h-4 w-4 mr-2 text-amber-500" />,
-  [MemberRoles.MODERATOR]: (
-    <BadgeCheck className="h-4 w-4 mr-2 text-emerald-600" />
-  ),
-};
 
 const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
   const user = await currentUser();
@@ -71,6 +61,7 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
     (member) => member.userId._id === user._id.toString()
   )?.role;
 
+
   return (
     <div className="flex flex-col h-[95%] text-primary rounded-xl overflow-hidden w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       <CrewHeader crew={serializedCrew} role={role} />
@@ -84,7 +75,7 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
                 data: TextChannels.map((channel) => ({
                   id: channel._id.toString(),
                   name: channel.name,
-                  icon: ChannelIcons["TEXT"],
+                  icon: CustomIcon(ChannelTypes.TEXT, "mr-2"),
                 })),
               },
               {
@@ -93,7 +84,7 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
                 data: AudioChannels.map((channel) => ({
                   id: channel._id.toString(),
                   name: channel.name,
-                  icon: ChannelIcons["AUDIO"],
+                  icon: CustomIcon(ChannelTypes.AUDIO, "mr-2"),
                 })),
               },
               {
@@ -102,7 +93,7 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
                 data: VideoChannels.map((channel) => ({
                   id: channel._id.toString(),
                   name: channel.name,
-                  icon: ChannelIcons["VIDEO"],
+                  icon: CustomIcon(ChannelTypes.VIDEO, "mr-2"),
                 })),
               },
               {
@@ -111,12 +102,84 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
                 data: Members.map((member) => ({
                   id: member._id.toString(),
                   name: member.userId.name ?? "",
-                  icon: MemberRoleIcons[member.role],
+                  icon: CustomIcon(member.role, "mr-2"),
                 })),
               },
             ]}
           />
         </div>
+        <Separator className="text-gray-200 !h-[2px] dark:bg-gray-700 rounded-md my-2" />
+        {!!TextChannels?.length && (
+          <div className="mb-2">
+            <CrewSection
+              sectionType="channels"
+              channelType={ChannelTypes.TEXT}
+              role={role}
+              label="Text Channels"
+            />
+            {TextChannels.map((channel) => (
+              <CrewChannel
+                key={channel._id.toString()}
+                channel={channel}
+                crew={serializedCrew}
+                role={role}
+              />
+            ))}
+          </div>
+        )}
+        {!!AudioChannels?.length && (
+          <div className="mb-2">
+            <CrewSection
+              sectionType="channels"
+              channelType={ChannelTypes.AUDIO}
+              role={role}
+              label="Voice Channels"
+            />
+            {AudioChannels.map((channel) => (
+              <CrewChannel
+                key={channel._id.toString()}
+                channel={channel}
+                crew={serializedCrew}
+                role={role}
+              />
+            ))}
+          </div>
+        )}
+        {!!VideoChannels?.length && (
+          <div className="mb-2">
+            <CrewSection
+              sectionType="channels"
+              channelType={ChannelTypes.VIDEO}
+              role={role}
+              label="Video Channels"
+            />
+            {VideoChannels.map((channel) => (
+              <CrewChannel
+                key={channel._id.toString()}
+                channel={channel}
+                crew={serializedCrew}
+                role={role}
+              />
+            ))}
+          </div>
+        )}
+        {!!Members?.length && (
+          <div className="mb-2">
+            <CrewSection
+              sectionType="members"
+              role={role}
+              label="Members"
+              crew={serializedCrew}
+            />
+            {Members.map((member) => (
+              <CrewMember
+                key={member._id.toString()}
+                member={member}
+                crew={serializedCrew}
+              />
+            ))}
+          </div>
+        )}
       </ScrollArea>
     </div>
   );

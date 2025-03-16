@@ -10,7 +10,7 @@ const CustomAvatar: FC<CustomAvatarProps> = ({ name, imageUrl }) => {
   // console.log(imageUrl);
   return (
     <Avatar className="hover:cursor-pointer">
-      <AvatarImage src={imageUrl} />
+      <AvatarImage src={imageUrl}  />
       <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
     </Avatar>
   );

@@ -2,7 +2,6 @@ import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
 import { Channel } from "@/models/Channel";
 import { Crew } from "@/models/Crew";
-import { User } from "@/models/User";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -45,20 +44,6 @@ export async function POST(req: Request) {
 
     if (!updateCrew) {
       return new NextResponse("Crew update failed - invalid crewId?", {
-        status: 400,
-      });
-    }
-
-    const updateUser = await User.findByIdAndUpdate(
-      user._id,
-      {
-        $addToSet: { channels: newChannel._id },
-      },
-      { new: true }
-    );
-
-    if (!updateUser) {
-      return new NextResponse("User update failed - invalid userId?", {
         status: 400,
       });
     }

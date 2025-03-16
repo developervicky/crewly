@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { ChannelTypes } from "@/types";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import CustomToast from "./custom-toast";
 import {
@@ -49,49 +49,47 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelTypes),
 });
 
-const CreateChannelModal = () => {
+const EditChannelModal = () => {
   const { isOpen, type, onClose, data } = useModal();
 
-  const isModalOpen = isOpen && type == "createChannel";
+  const isModalOpen = isOpen && type == "editChannel";
 
   const router = useRouter();
-  const params = useParams();
 
-  const { channelType } = data;
+  const { channel, crew } = data;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType || ChannelTypes.TEXT,
+      type: channel?.type || ChannelTypes.TEXT,
     },
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelTypes.TEXT);
+    if (channel) {
+      form.setValue("name", channel?.name);
+      form.setValue("type", channel?.type);
     }
-  }, [channelType, form]);
+  }, [channel, form]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/channels",
+        url: `/api/channels/${channel?._id}`,
         query: {
-          crewId: params?.crewId,
+          crewId: crew?._id.toString(),
         },
       });
 
-      await axios.post(url, values);
+      await axios.patch(url, values);
 
       form.reset();
       router.refresh();
       onClose();
-      CustomToast({ variant: "success", message: "Channel created" });
+      CustomToast({ variant: "success", message: "Channel updated" });
     } catch (error) {
       console.error(error);
       CustomToast({
@@ -111,7 +109,7 @@ const CreateChannelModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Launch your channel 🚀
+            Edit your channel 🚀
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Build your channel—choose a name, set an type, and make it uniquely
@@ -176,7 +174,7 @@ const CreateChannelModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading}>Create</Button>
+              <Button disabled={isLoading}>Save</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -185,4 +183,4 @@ const CreateChannelModal = () => {
   );
 };
 
-export default CreateChannelModal;
+export default EditChannelModal;

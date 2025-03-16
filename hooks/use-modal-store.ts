@@ -1,4 +1,5 @@
-import { CrewPopulated } from "@/types";
+import { IChannel } from "@/models/Channel";
+import { ChannelTypes, CrewPopulated } from "@/types";
 import { create } from "zustand";
 
 export type ModalType =
@@ -8,10 +9,14 @@ export type ModalType =
   | "members"
   | "createChannel"
   | "leaveCrew"
-  | "deleteCrew";
+  | "deleteCrew"
+  | "deleteChannel"
+  | "editChannel";
 
 interface ModalData {
   crew?: CrewPopulated;
+  channel?: IChannel;
+  channelType?: ChannelTypes;
 }
 
 interface ModalStore {
