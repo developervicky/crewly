@@ -20,7 +20,7 @@ const Home = () => {
         <div className="flex flex-col items-center gap-4 border-2 border-stone-500 p-4 rounded-xl">
           <h1 className="text-2xl font-semibold tracking-wide">crewly</h1>
           <p className="font-extralight">
-            The best way to connect with your crews!
+            The best way to connect with your crews! 🫂
           </p>
           <Button
             onClick={() => {
