@@ -4,7 +4,6 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
-import React from "react";
 
 const Home = () => {
   const { status } = useSession();
@@ -21,7 +20,7 @@ const Home = () => {
         <div className="flex flex-col items-center gap-4 border-2 border-stone-500 p-4 rounded-xl">
           <h1 className="text-2xl font-semibold tracking-wide">crewly</h1>
           <p className="font-extralight">
-            The best way to connect with your crews
+            The best way to connect with your crews!
           </p>
           <Button
             onClick={() => {
