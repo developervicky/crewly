@@ -1,11 +1,11 @@
 "use client";
 
-import { useModal } from "@/hooks/use-modal-store";
+import { ModalType, useModal } from "@/hooks/use-modal-store";
 import { cn } from "@/lib/utils";
 import { IChannel } from "@/models/Channel";
 import { CrewPopulated, MemberRoles } from "@/types";
 import { Edit, Lock, Trash } from "lucide-react";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import ActionTooltip from "./action-tooltip";
 import { CustomIcon } from "./icon-map";
 
@@ -18,10 +18,20 @@ const CrewChannel = ({ channel, crew, role }: CrewChannelProps) => {
   const { onOpen } = useModal();
   const params = useParams();
 
+  const onClick = () => {
+    redirect(`/crew/${params.crewId}/channel/${channel._id}`);
+  };
+
+  const onAction = (e: React.MouseEvent, type: ModalType) => {
+    e.stopPropagation();
+
+    onOpen(type, { channel, crew });
+  };
+
   return (
     <div>
       <button
-        onClick={() => {}}
+        onClick={onClick}
         className={cn(
           "cursor-pointer group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-gray-700/10 dark:hover:bg-gray-700/50 transition mb-1",
           params?.channelId === channel._id && "bg-gray-700/20 dark:bg-gray-700"
@@ -44,13 +54,13 @@ const CrewChannel = ({ channel, crew, role }: CrewChannelProps) => {
           <div className="ml-auto flex items-center gap-x-2">
             <ActionTooltip label="Edit">
               <Edit
-                onClick={() => onOpen("editChannel", { channel, crew })}
+                onClick={(e) => onAction(e, "editChannel")}
                 className="hidden group-hover:block w-4 h-4 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition"
               />
             </ActionTooltip>
             <ActionTooltip label="Delete">
               <Trash
-                onClick={() => onOpen("deleteChannel", { channel, crew })}
+                onClick={(e) => onAction(e, "deleteChannel")}
                 className="hidden group-hover:block w-4 h-4 text-gray-500 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500 transition"
               />
             </ActionTooltip>
