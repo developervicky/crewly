@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { IMember } from "@/models/Member";
 import { IUser } from "@/models/User";
 import { CrewPopulated } from "@/types";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import CustomAvatar from "./avatar";
 import { CustomIcon } from "./icon-map";
 
@@ -14,8 +14,13 @@ interface CrewMemberProps {
 const CrewMember = ({ member }: CrewMemberProps) => {
   const params = useParams();
 
+  const onClick = () => {
+    redirect(`/crew/${params.crewId}/convo/${member._id}`);
+  };
+
   return (
     <button
+      onClick={onClick}
       className={cn(
         "group cursor-pointer p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-gray-700/10 dark:hover:bg-zinc-700/50 transition mb-1",
         params?.memberId === member._id && "bg-gray-700/20 dark:bg-gray-700"
