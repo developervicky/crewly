@@ -61,9 +61,8 @@ const CrewSidebar = async ({ crewId }: CrewSidebarProps) => {
     (member) => member.userId._id === user._id.toString()
   )?.role;
 
-
   return (
-    <div className="flex flex-col h-[95%] text-primary rounded-xl overflow-hidden w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
+    <div className="flex flex-col h-full md:h-[95%] text-primary md:rounded-xl overflow-hidden w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       <CrewHeader crew={serializedCrew} role={role} />
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">

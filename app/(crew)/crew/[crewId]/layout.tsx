@@ -53,7 +53,9 @@ const layout = async ({ params, children }: LayoutProps) => {
       <div className="hidden md:flex items-center justify-center h-full w-60 z-20 ml-6 flex-col fixed inset-y-0">
         <CrewSidebar crewId={crewId} />
       </div>
-      <main className="h-full md:pl-[280px]">{children}</main>
+      <main className="h-full md:pl-[288px] flex flex-col items-center justify-center w-full">
+        {children}
+      </main>
     </div>
   );
 };
