@@ -3,6 +3,8 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 
 import ModalProvider from "@/components/modal-provider";
+import QueryProvider from "@/components/query-provider";
+import { SocketProvider } from "@/components/socket-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
@@ -39,11 +41,13 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="crewly-theme"
         >
-          <Toaster position="top-right" />
-          <SessionProvider>
-            <ModalProvider />
-            {children}
-          </SessionProvider>
+          <SocketProvider>
+            <Toaster position="top-right" />
+            <SessionProvider>
+              <ModalProvider />
+              <QueryProvider>{children}</QueryProvider>
+            </SessionProvider>
+          </SocketProvider>
         </ThemeProvider>
       </body>
     </html>

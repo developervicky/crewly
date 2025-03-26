@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["zovz377v7v.ufs.sh", "lh3.googleusercontent.com"],
   },
+  transpilePackages: ["next-auth"],
 };
 
 export default nextConfig;

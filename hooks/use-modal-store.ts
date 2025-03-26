@@ -1,5 +1,6 @@
 import { IChannel } from "@/models/Channel";
 import { ChannelTypes, CrewPopulated } from "@/types";
+import { StringifiableRecord } from "query-string";
 import { create } from "zustand";
 
 export type ModalType =
@@ -11,12 +12,16 @@ export type ModalType =
   | "leaveCrew"
   | "deleteCrew"
   | "deleteChannel"
-  | "editChannel";
+  | "editChannel"
+  | "messageFile"
+  | "deleteMessage";
 
 interface ModalData {
   crew?: CrewPopulated;
   channel?: IChannel;
   channelType?: ChannelTypes;
+  apiUrl?: string;
+  query?: StringifiableRecord;
 }
 
 interface ModalStore {

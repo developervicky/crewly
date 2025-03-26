@@ -15,15 +15,15 @@ const CrewMember = ({ member }: CrewMemberProps) => {
   const params = useParams();
 
   const onClick = () => {
-    redirect(`/crew/${params.crewId}/convo/${member._id}`);
+    redirect(`/crew/${params?.crewId}/convo/${member._id}`);
   };
 
   return (
     <button
       onClick={onClick}
       className={cn(
-        "group cursor-pointer p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-gray-700/10 dark:hover:bg-zinc-700/50 transition mb-1",
-        params?.memberId === member._id && "bg-gray-700/20 dark:bg-gray-700"
+        "group mb-1 flex w-full cursor-pointer items-center gap-x-2 rounded-md p-2 transition hover:bg-gray-700/10 dark:hover:bg-zinc-700/50",
+        params?.memberId === member._id && "bg-gray-700/20 dark:bg-gray-700",
       )}
     >
       <CustomAvatar
@@ -32,9 +32,9 @@ const CrewMember = ({ member }: CrewMemberProps) => {
       />
       <p
         className={cn(
-          "font-semibold text-sm break-words text-gray-500 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 transition",
+          "text-sm font-semibold break-words text-gray-500 transition group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300",
           params?.memberId === member?._id &&
-            "text-primary dark:text-gray-200 dark:group-hover:text-white"
+            "text-primary dark:text-gray-200 dark:group-hover:text-white",
         )}
       >
         {member?.userId?.name}
