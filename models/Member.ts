@@ -11,6 +11,14 @@ const MemberSchema = new Schema(
     },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     crewId: { type: Schema.Types.ObjectId, ref: "Crew", required: true },
+
+    messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+
+    directMessages: [{type: Schema.Types.ObjectId, ref: "DirectMessage"}],
+
+    conversationsInitiated: [{type: Schema.Types.ObjectId, ref:"Conversation"}],
+    conversationsReceived: [{type: Schema.Types.ObjectId, ref:"Conversation"}]
+
   },
   { timestamps: true }
 );

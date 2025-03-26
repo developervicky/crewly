@@ -21,13 +21,14 @@ const layout = async ({ params, children }: LayoutProps) => {
 
   const NonMember = () => {
     return (
-      <div className=" flex items-center justify-center h-screen text-2xl font-semibold">
+      <div className="flex h-screen items-center justify-center text-2xl font-semibold">
         You are not a part of this crew! 👀
       </div>
     );
   };
 
   await connectDB();
+
 
   const crew = await Crew.findOne({ _id: crewId })
     .populate("members") // Convert `members` array (ObjectIds) into full Member objects
@@ -36,11 +37,12 @@ const layout = async ({ params, children }: LayoutProps) => {
 
       // Check if the user is in the `members` array
       const isMember = crew.members.some(
-        (member: IMember) => member.userId.toString() === user._id.toString()
+        (member: IMember) => member.userId.toString() === user._id.toString(),
       );
 
       return isMember ? crew : null;
     });
+
 
   if (!crew) {
     return <NonMember />;
@@ -50,10 +52,12 @@ const layout = async ({ params, children }: LayoutProps) => {
 
   return (
     <div className="h-full">
-      <div className="hidden md:flex items-center justify-center h-full w-60 z-20 ml-6 flex-col fixed inset-y-0">
+      <div className="fixed inset-y-0 z-20 ml-6 hidden h-full w-60 flex-col items-center justify-center md:flex">
         <CrewSidebar crewId={crewId} />
       </div>
-      <main className="h-full md:pl-[280px]">{children}</main>
+      <main className="flex h-full w-full flex-col items-center justify-center md:pl-[288px]">
+        {children}
+      </main>
     </div>
   );
 };

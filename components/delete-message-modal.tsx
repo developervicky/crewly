@@ -11,36 +11,38 @@ import {
 
 import { useModal } from "@/hooks/use-modal-store";
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
+import qs from "query-string";
 import { useState } from "react";
 import CustomToast from "./custom-toast";
 import { Button } from "./ui/button";
 
-const DeleteCrewModal = () => {
-  const { isOpen, type, onClose } = useModal();
-
-  const params = useParams();
-  const router = useRouter();
+const DeleteMessageModal = () => {
+  const { isOpen, type, onClose, data } = useModal();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const isModalOpen = isOpen && type == "deleteCrew";
+  const isModalOpen = isOpen && type == "deleteMessage";
+
+  const { apiUrl, query } = data;
 
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/crew/${params?.crewId}`);
+      const url = qs.stringifyUrl({
+        url: apiUrl || "",
+        query,
+      });
+
+      await axios.delete(url);
 
       onClose();
-      router.refresh();
-      router.push("/");
-      CustomToast({ variant: "success", message: "Crew deleted 🏃‍♂️" });
+      CustomToast({ variant: "success", message: "Message deleted 🏃‍♂️" });
     } catch (error) {
       console.log(error);
       CustomToast({
         variant: "error",
-        message: "The server resists deletion… 'You belong here.' 🔗😨",
+        message: "The server resists deletion… 🔗😨",
       });
     } finally {
       setIsLoading(false);
@@ -52,10 +54,10 @@ const DeleteCrewModal = () => {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Delete Crew 🙅
+            Delete Message 🙅🛑
           </DialogTitle>
           <DialogDescription className="text-center text-gray-500">
-            Once deleted, your crew cannot be restored. Are you certain? 🛑
+            Once deleted, your message cannot be restored. Are you certain?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
@@ -77,4 +79,4 @@ const DeleteCrewModal = () => {
   );
 };
 
-export default DeleteCrewModal;
+export default DeleteMessageModal;

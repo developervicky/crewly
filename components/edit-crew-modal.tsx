@@ -109,7 +109,7 @@ const EditCrewModal = () => {
                       <FormControl>
                         <FileUpload
                           endPoint="crewImage"
-                          value={field.value}
+                          fileUrl={field.value}
                           onChange={field.onChange}
                         />
                       </FormControl>

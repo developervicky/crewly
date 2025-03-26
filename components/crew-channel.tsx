@@ -19,7 +19,7 @@ const CrewChannel = ({ channel, crew, role }: CrewChannelProps) => {
   const params = useParams();
 
   const onClick = () => {
-    redirect(`/crew/${params.crewId}/channel/${channel._id}`);
+    redirect(`/crew/${params?.crewId}/channel/${channel._id}`);
   };
 
   const onAction = (e: React.MouseEvent, type: ModalType) => {
@@ -33,19 +33,20 @@ const CrewChannel = ({ channel, crew, role }: CrewChannelProps) => {
       <button
         onClick={onClick}
         className={cn(
-          "cursor-pointer group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-gray-700/10 dark:hover:bg-gray-700/50 transition mb-1",
-          params?.channelId === channel._id && "bg-gray-700/20 dark:bg-gray-700"
+          "group mb-1 flex w-full cursor-pointer items-center gap-x-2 rounded-md p-2 transition hover:bg-gray-700/10 dark:hover:bg-gray-700/50",
+          params?.channelId === channel._id &&
+            "bg-gray-700/20 dark:bg-gray-700",
         )}
       >
         {CustomIcon(
           channel.type,
-          "flex-shrink text-gray-500 dark:text-gray-400"
+          "flex-shrink text-gray-500 dark:text-gray-400",
         )}
         <p
           className={cn(
-            "line-clamp-1 font-semibold text-sm text-gray-500 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 transition",
+            "line-clamp-1 text-sm font-semibold text-gray-500 transition group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300",
             params?.channelId === channel._id &&
-              "text-primary dark:text-gray-200 dark:group-hover:text-white"
+              "text-primary dark:text-gray-200 dark:group-hover:text-white",
           )}
         >
           {channel.name}
@@ -55,13 +56,13 @@ const CrewChannel = ({ channel, crew, role }: CrewChannelProps) => {
             <ActionTooltip label="Edit">
               <Edit
                 onClick={(e) => onAction(e, "editChannel")}
-                className="hidden group-hover:block w-4 h-4 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition"
+                className="hidden h-4 w-4 text-gray-500 transition group-hover:block hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
               />
             </ActionTooltip>
             <ActionTooltip label="Delete">
               <Trash
                 onClick={(e) => onAction(e, "deleteChannel")}
-                className="hidden group-hover:block w-4 h-4 text-gray-500 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500 transition"
+                className="hidden h-4 w-4 text-gray-500 transition group-hover:block hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500"
               />
             </ActionTooltip>
           </div>

@@ -27,8 +27,6 @@ const CrewIdPage = async ({
     .select("channels") // Select only the channels field
     .exec();
 
-  console.log(generalChannel.channels[0].name);
-
   const channelName = generalChannel.channels[0].name;
 
   if (channelName !== "general") {

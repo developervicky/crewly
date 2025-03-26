@@ -30,7 +30,7 @@ const LeaveModal = () => {
     try {
       setIsLoading(true);
 
-      await axios.patch(`/api/crew/${params.crewId}/leave`);
+      await axios.patch(`/api/crew/${params?.crewId}/leave`);
 
       onClose();
       router.refresh();

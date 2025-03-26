@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 import axios from "axios";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -21,42 +23,54 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { useModal } from "@/hooks/use-modal-store";
 import { useRouter } from "next/navigation";
 import CustomToast from "./custom-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Crew name is required 👀",
+  fileUrl: z.string().min(1, {
+    message: "Upload any file 👀",
   }),
-  imageUrl: z.string().min(1, {
-    message: "Upload your crew image 👀",
-  }),
+  fileName: z.string().min(1),
 });
 
-const InitialModal = () => {
+const MessageFileModal = () => {
+  const { data, isOpen, onClose, type } = useModal();
   const router = useRouter();
+
+  const isModalOpen = isOpen && type == "messageFile";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      imageUrl: "",
+      fileUrl: "",
+      fileName: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
+  const { apiUrl, query } = data;
+
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/crew", values);
+      const url = qs.stringifyUrl({ url: apiUrl || "", query });
+      await axios.post(url, {
+        fileName: values.fileName,
+        fileUrl: values.fileUrl,
+      });
 
       form.reset();
       router.refresh();
-      window.location.reload();
-      CustomToast({ variant: "success", message: "Crew created" });
+      handleClose();
+      CustomToast({ variant: "success", message: "Your file uploaded" });
     } catch (error) {
       console.error(error);
       CustomToast({
@@ -66,15 +80,14 @@ const InitialModal = () => {
     }
   };
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Launch your crew 🚀
+            Upload Image/Pdf 🚀
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Assemble your crew—give it a name, set an image, and make it yours!
-            🫂
+            Send a photo or PDF & let the conversation flow! 💬
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -83,44 +96,30 @@ const InitialModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <FileUpload
-                          endPoint="crewImage"
-                          fileUrl={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  name="fileUrl"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <FileUpload
+                            endPoint="messageFile"
+                            fileUrl={field.value}
+                            fileName={form.watch("fileName")}
+                            onChange={(url, name) => {
+                              form.setValue("fileUrl", url ?? ""),
+                              form.setValue("fileName", name ?? "")
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="dark:text-secondary/70 text-xs font-bold text-zinc-500 uppercase">
-                      Crew name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder="your crew name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading}>Create</Button>
+              <Button disabled={isLoading}>Send</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -129,4 +128,4 @@ const InitialModal = () => {
   );
 };
 
-export default InitialModal;
+export default MessageFileModal;
