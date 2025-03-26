@@ -30,7 +30,7 @@ const DeleteCrewModal = () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/crew/${params.crewId}`);
+      await axios.delete(`/api/crew/${params?.crewId}`);
 
       onClose();
       router.refresh();
@@ -49,9 +49,9 @@ const DeleteCrewModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+      <DialogContent className="overflow-hidden bg-white p-0 text-black">
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">
             Delete Crew 🙅
           </DialogTitle>
           <DialogDescription className="text-center text-gray-500">
@@ -59,7 +59,7 @@ const DeleteCrewModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex w-full items-center justify-between">
             <Button variant="ghost" disabled={isLoading} onClick={onClose}>
               Cancel
             </Button>
