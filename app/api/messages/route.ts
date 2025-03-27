@@ -1,4 +1,5 @@
 import currentUser from "@/lib/current-user";
+import { connectDB } from "@/lib/mongoose";
 import { IMessage, Message } from "@/models/Message";
 import { NextResponse } from "next/server";
 
@@ -18,6 +19,8 @@ export async function GET(req: Request) {
     if (!channelId) {
       return new NextResponse("channelId missing", { status: 400 });
     }
+
+    await connectDB();
 
     let messages: IMessage[] = [];
     if (cursor) {
