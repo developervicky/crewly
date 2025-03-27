@@ -1,11 +1,13 @@
 import ChatHeader from "@/components/chat-header";
 import ChatInput from "@/components/chat-input";
 import ChatMessages from "@/components/chat-messages";
+import MediaRoom from "@/components/media-room";
 import currentUser from "@/lib/current-user";
 import { connectDB } from "@/lib/mongoose";
-import { Channel } from "@/models/Channel";
-import { Crew } from "@/models/Crew";
-import { Member } from "@/models/Member";
+import { Channel, IChannel } from "@/models/Channel";
+import { Crew, ICrew } from "@/models/Crew";
+import { IMember, Member } from "@/models/Member";
+import { ChannelTypes } from "@/types";
 import { redirect } from "next/navigation";
 
 const ChannelIdPage = async ({
@@ -31,9 +33,9 @@ const ChannelIdPage = async ({
     redirect("/");
   }
 
-  const CrewJson = JSON.parse(JSON.stringify(crew));
-  const ChannelJson = JSON.parse(JSON.stringify(channel));
-  const MemberJson = JSON.parse(JSON.stringify(member));
+  const CrewJson: ICrew = JSON.parse(JSON.stringify(crew));
+  const ChannelJson: IChannel = JSON.parse(JSON.stringify(channel));
+  const MemberJson: IMember = JSON.parse(JSON.stringify(member));
 
   // console.log(MemberJson);
   // console.log(CrewJson);
@@ -42,30 +44,51 @@ const ChannelIdPage = async ({
   return (
     <div className="flex h-full w-full flex-col bg-[#F2F3F5] md:mr-6 md:h-[95%] md:rounded-xl dark:bg-[#2B2D31]">
       <ChatHeader
-        crewId={ChannelJson.crewId}
+        crewId={ChannelJson.crewId.toString()}
         name={ChannelJson.name}
         type="channel"
       />
-      <ChatMessages
-        name={ChannelJson.name}
-        member={MemberJson}
-        chatId={ChannelJson._id}
-        apiUrl={"/api/messages"}
-        socketUrl={"/api/socket/messages"}
-        socketQuery={{
-          channelId: ChannelJson._id,
-          crewId: CrewJson._id,
-        }}
-        paramKey={"channelId"}
-        paramValue={ChannelJson._id}
-        type={"channel"}
-      />
-      <ChatInput
-        apiUrl="/api/socket/messages"
-        name={ChannelJson?.name}
-        query={{ channelId: ChannelJson?._id, crewId: CrewJson?._id }}
-        type="channel"
-      />
+      {ChannelJson.type === ChannelTypes.TEXT && (
+        <>
+          <ChatMessages
+            name={ChannelJson.name}
+            member={MemberJson}
+            chatId={ChannelJson._id.toString()}
+            apiUrl={"/api/messages"}
+            socketUrl={"/api/socket/messages"}
+            socketQuery={{
+              channelId: ChannelJson._id.toString(),
+              crewId: CrewJson._id.toString(),
+            }}
+            paramKey={"channelId"}
+            paramValue={ChannelJson._id.toString()}
+            type={"channel"}
+          />
+          <ChatInput
+            apiUrl="/api/socket/messages"
+            name={ChannelJson?.name}
+            query={{
+              channelId: ChannelJson?._id.toString(),
+              crewId: CrewJson?._id.toString(),
+            }}
+            type="channel"
+          />
+        </>
+      )}
+      {ChannelJson.type === ChannelTypes.AUDIO && (
+        <MediaRoom
+          audio={true}
+          video={false}
+          chatId={ChannelJson._id.toString()}
+        />
+      )}
+      {ChannelJson.type === ChannelTypes.VIDEO && (
+        <MediaRoom
+          audio={true}
+          video={true}
+          chatId={ChannelJson._id.toString()}
+        />
+      )}
     </div>
   );
 };
