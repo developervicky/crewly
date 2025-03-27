@@ -10,4 +10,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/", // Redirects to custom sign-in page
     signOut: "/", // Redirects to custom sign-out page
   },
+  trustHost: true,
 });
